@@ -1,0 +1,1775 @@
+﻿
+@{
+    ViewBag.Title = "Registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<img src="@ViewBag.imagen" />*@
+
+<style>
+    .nav-tabs .nav-link:not(.active) {
+        border-color: transparent !important;
+    }
+</style>
+<div id="tabs">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active border border-primary border-bottom-0" id="tabEmpleado" href="#tabs-1" role="tab" data-toggle="tab">EMPLEADOS</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link border border-warning border-bottom-0" href="#tabs-2" id="tabVisitante" role="tab" data-toggle="tab">VISITANTES</a>
+        </li>
+    </ul>
+    <br />
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade active show h-100 p-3 border border-primary" id="tabs-1" style="background-color: #C3D5F5;">
+
+            <div class="container">
+
+                <a class="btn btn-outline-success my-2 my-sm-0" id="btnEntrada">Entrada</a>
+                <a class="btn btn-outline-primary my-2 my-sm-0" id="btnSalida">Salida</a>
+                <hr>
+                <!--Container Navbar-->
+                <div class="row" id="entrada" style="display:block">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 text-center">
+
+                        <h3><span class="badge badge-success"> Registro de Entrada</span></h3>
+                        <input type="text" id="txtIdEntrada" name="identificacion" class="form-control mb-4" placeholder="Identificación">
+                        <button id="btnGuardarEntreda" class="btn btn-success my-4 btn-block" type="button" name="nuevo" data-toggle="modal" data-target="#nuevocertificado">Grabar</button>
+                        @*<button type="button" id="GuardarVisitante" class="btn btn-outline-success my-4 btn-block"> Grabar Visitante </button>*@
+
+                    </div><!-- / Columna formulario-->
+                    <div class="col-md-2"></div>
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 justify-content-center text-center">
+                        <img src="@ViewBag.imagen" width="150" height="150" id="imgEmpleado" />
+
+                    </div>
+                    <br />
+                    <div class="col-md-2"></div>
+
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-success" role="alert" id="Correcto" style="display:none">
+                        </div>
+                        <div class="alert alert-danger" role="alert" id="Error" style="display:none">
+                        </div>
+                        <div class="alert alert-warning" role="alert" id="Alerta" style="display:none">
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+
+
+                </div>
+
+
+                <div class="row" id="salida" style="display:none">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 text-center">
+
+                        <h3><span class="badge badge-primary">Registro de Salida</span></h3>
+                        <input type="text" id="txtIdSalida" required="required" name="txtIdSalida" class="form-control mb-4" placeholder="Identificación">
+                        <button id="btnGuardarSalida" class="btn btn-info my-4 btn-block" type="button">Grabar</button>
+
+
+                    </div><!-- / Columna formulario-->
+                    <div class="col-md-2"></div>
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 justify-content-center text-center">
+                        <img src="@ViewBag.imagen" width="150" height="150" id="imgEmpleadoSalida" />
+
+                    </div>
+                    <br />
+                    <div class="col-md-2"></div>
+
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-success" role="alert" id="CorrectoS" style="display:none">
+                        </div>
+                        <div class="alert alert-danger" role="alert" id="ErrorS" style="display:none">
+                        </div>
+                        <div class="alert alert-warning" role="alert" id="AlertaS" style="display:none">
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane fade h-100 p-3 border border-warning" id="tabs-2" style="background-color: #F5F1D8; ">
+            <div class="container">
+
+                <a class="btn btn-outline-success my-2 my-sm-0" id="btnEntradaS">Entrada</a>
+                <a class="btn btn-outline-primary my-2 my-sm-0" id="btnSalidaS">Salida</a>
+                <hr>
+                <!--Container Navbar-->
+                <div class="row" id="entradaS" style="display:block">
+                    <div class="alert alert-success" id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <strong>Success!</strong>
+                        SE PROCESO CORRECTAMENTE.
+                    </div>
+
+                    @*<div class="col-md-2"></div>*@
+                    <div class="row">
+                        <div class="col-lg-8 text-center">
+                            <h3><span class="badge badge-success">Registro de Entrada</span></h3>
+                            <form id="form1" name="form1">
+                                <input type="text" id="txtIdEntradaS" name="txtIdEntradaS" class="form-control mb-4" placeholder="Identificación">
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Nombre y Apellido</label>
+                                            <input type="text" class="form-control" id="txtNombreNuevo" name="txtNombreNuevo">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>ARL</label>
+                                            <select class="form-control" id="cboArl" name="cboArl">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="txtarlOtro" name="txtarlOtro" style="display:none" placeholder="digite la ARL">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group autocomplete" style="width:100%;">
+                                            <label>Empleado Autoriza</label>
+                                            <select class="form-control" id="cboEmpleadoAutoriza" name="cboEmpleadoAutoriza">
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Motivo Visita</label>
+                                            <textarea class="form-control" id="txtMotivoVisita" name="txtMotivoVisita" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Placa Vehiculo</label>
+                                            <input type="text" class="form-control" id="txtPlaca">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Empresa Origen</label>
+                                            <input type="text" class="form-control" id="txtEmpresa">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                </div>
+
+                            </form>
+
+
+                            <button id="btnGuardarEntredaS" class="btn btn-success my-4 btn-block" type="button" name="nuevo" data-toggle="modal" data-target="#nuevocertificado">Grabar</button>
+                            @*<button type="button" id="GuardarVisitante" class="btn btn-outline-success my-4 btn-block"> Grabar Visitante </button>*@
+
+                        </div>
+                        <div class="col-lg-4 justify-content-center text-center">
+
+                            <img src="@ViewBag.imagen" width="150" height="150" id="imgVisitante" />
+
+
+                        </div>
+                        <br />
+                    </div>
+
+                </div>
+
+
+                <div class="row" id="salidaS" style="display:none">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 text-center">
+
+                        <h3><span class="badge badge-primary">Registro de Salida VISITANTES</span></h3>
+                        <input type="text" id="txtIdSalidaS" required="required" name="txtIdSalidaS" class="form-control mb-4" placeholder="Identificación">
+                        <button id="btnGuardarSalidaS" class="btn btn-info my-4 btn-block" type="button">Grabar</button>
+                        <!-- <button type="button" id="GuardarVisitante" class="btn btn-outline-primary my-4 btn-block"> Grabar Visitante </button>-->
+                        <hr>
+
+                    </div><!-- / Columna formulario-->
+                    <div class="col-md-2"></div>
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 justify-content-center text-center">
+                        <img src="@ViewBag.imagen" width="150" height="150" id="imgVisitanteSalida" />
+
+                    </div>
+                    <br />
+                    <div class="col-md-2"></div>
+
+
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-success" role="alert" id="CorrectoSV" style="display:none">
+                        </div>
+                        <div class="alert alert-danger" role="alert" id="ErrorSV" style="display:none">
+                        </div>
+                        <div class="alert alert-warning" role="alert" id="AlertaSV" style="display:none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="modal fade" id="modalregistradoFoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Foto Empleado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+
+                <div id="divImg" class="col-auto justify-content-center text-center" style="display:block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="" width="350" height="350" id="imgEmpleadoC" />
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="btnGuardarFoto" class="btn btn-success">Guardar Foto</button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div id="divFoto" class="col-auto justify-content-center text-center" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <video id="video"></video>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="startbutton" class="btn btn-info">Captura Foto</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <canvas id="canvas" style="display:none"></canvas>
+                    </div>
+
+                </div>
+
+                <br />
+
+            </div>
+
+
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-warning" id="btnEditarFoto">Modificar Foto</button>
+                <button type="button" class="btn btn-secondary" onclick="$('#txtIdEntrada').focus();" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="modalregistradoEntradaVFrecuente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Foto Visitante</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+
+                <div id="divImgV" class="col-auto justify-content-center text-center" style="display:block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="" width="350" height="350" id="imgEmpleadoCV" />
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="btnGuardarFotoV" class="btn btn-success">Guardar Foto</button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div id="divFotoV" class="col-auto justify-content-center text-center" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <video id="videoV"></video>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="startbuttonV" class="btn btn-info">Captura Foto</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <canvas id="canvasV" style="display:none"></canvas>
+                    </div>
+
+                </div>
+
+                <br />
+
+            </div>
+
+
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-warning" id="btnEditarFotoV">Modificar Foto</button>
+                <button type="button" class="btn btn-secondary" onclick="$('#txtIdEntradaS').focus();" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<input type="hidden" id="txtCedulaConsulta" />
+
+<input type="hidden" id="txtCedulaVisitante" />
+
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+    //function cargarModalVisitante(cedula) {
+    //    cargarEmpleados();
+    //    getArl();
+    //    var nombre = "";
+    //    if (cedula.length > 12) {
+    //        var arrayE = cedula.split('/');
+    //        //contar split
+    //        //alert(cedula.split('/').length);
+    //        cedula = Number(arrayE[0]);
+    //        nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+    //    }
+
+
+    //    //validar si existe empleado
+    //    document.getElementById("txtarlOtro").style.display = "none";
+    //    $("#txtCedulaNuevo").val("");
+    //    $("#txtNombreNuevo").val("");
+    //    $("#txtEmpleadoAutoriza").val("");
+    //    $("#txtMotivoVisita").val("");
+    //    $("#txtPlaca").val("");
+    //    $("#txtarlOtro").val("");
+    //    $("#txtEmpresa").val("");
+
+
+
+
+    //    /* $.ajax({
+    //                        url: './GetVisitante.php?cedula='+cedula,
+    //                        data: {},
+    //                        crossDomain: true,
+    //                        type: 'GET',
+    //                        dataType: 'json',
+    //                             success: function (data) {
+
+
+    //                               jQuery.each(data, function (index, itemData) {
+
+    //                                   $('#txtNombreNuevo').val(itemData.nombre);
+    //                                   $("#cboArl option[value='"+itemData.arl+"'").attr("selected",true);
+    //                                   document.getElementById("cboArl").value = itemData.arl;
+
+
+    //                                 });
+
+
+    //                          },
+
+    //                            error: function (request, message, error) {
+    //                                alert(message);
+    //                           }
+    //        });
+
+
+    //       if(encontro == "1"){
+    //         $('#modalVisitante').modal("show");
+    //       }else{
+
+    //       }*/
+
+
+    //    $('#txtCedulaNuevo').val(cedula);
+    //    $('#txtNombreNuevo').val(nombre);
+
+
+    //    $('#txtCedulaNuevo').focus();
+    //    if (cedula != "") {
+    //        buscarVisitante();
+    //    }
+
+
+    //}
+
+    function guardarVisitanteSalida(cedula, nombre) {
+
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GuardarVisitanteSalida", "Home")',
+           data: { "cedula": cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+                success: function (data) {
+                    document.getElementById("loader").style.display = "none";
+                    if (data == "") {
+                        document.getElementById("CorrectoSV").style.display = "block";
+                        $('#CorrectoSV').append("<h5 class='alert-heading'>Registro Exitoso de SALIDA</h5> <hr> Se registró la SALIDA de <strong>" + nombre + "</strong>, con número de identificación <strong>" + cedula + "<br />");
+                        $("#txtIdSalidaS").val("");
+                        $("#txtIdSalidaS").focus();
+
+                    } else {
+                        document.getElementById("ErrorSV").style.display = "block";
+                        $('#ErrorSV').append("<strong>ERROR!</strong> " +data);
+
+                        $("#txtIdSalidaS").focus();
+                    }
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+
+    }
+
+    function guardarEmpleadoSalida(cedula, nombre) {
+
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GuardarEmpleadoSalida", "Home")',
+           data: { "cedula": cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+                success: function (data) {
+                    document.getElementById("loader").style.display = "none";
+                    if (data == "") {
+                        document.getElementById("CorrectoS").style.display = "block";
+                        $('#CorrectoS').append("<h5 class='alert-heading'>Registro Exitoso de SALIDA</h5> <hr> Se registró la SALIDA de <strong>" + nombre + "</strong>, con número de identificación <strong>" + cedula + "<br />");
+                        $("#txtIdSalida").focus();
+
+                    } else {
+                        document.getElementById("ErrorS").style.display = "block";
+                        $('#ErrorS').append("<strong>ERROR!</strong> NO SE ENCONTRO EL EMPLEADO O ESTA INACTIVO");
+
+                        $("#txtIdSalida").focus();
+                    }
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+
+    }
+
+    function guardarEmpleadoEntrada(cedula, nombre) {
+
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GuardarEmpleadoEntrada", "Home")',
+           data: { "cedula": cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+                success: function (data) {
+                    document.getElementById("loader").style.display = "none";
+                    if (data == "") {
+                        document.getElementById("Correcto").style.display = "block";
+                        $('#Correcto').append("<h5 class='alert-heading'>Registro Exitoso de ENTRADA</h5> <hr> Se registró la ENTRADA de <strong>" + nombre + "</strong>, con número de identificación <strong>" + cedula + "<br />");
+
+                        $("#txtIdEntrada").focus();
+
+                    } else {
+                        document.getElementById("Error").style.display = "block";
+                        $('#Error').append("<strong>ERROR!</strong>" + data);
+                        $("#txtIdEntrada").focus();
+                    }
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+
+    }
+
+    function buscarVisitante() {
+        var cedula = $('#txtIdEntradaS').val();
+     ///*   $('#txtIdEntradaS').val("");*/
+     //   var nombre = "";
+     //   if (cedula.length > 12) {
+     //       var arrayE = cedula.split('/');
+     //       //contar split
+     //       //alert(cedula.split('/').length);
+     //       cedula = Number(arrayE[0]);
+     //       nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+     //   }
+
+        if (cedula != "") {
+
+        $("#cboArl option[value='0'").attr("selected", true);
+        document.getElementById("cboArl").value = "";
+     /*   $('#txtNombreNuevo').val(nombre);*/
+        $('#txtNombreNuevo').focus();
+        document.getElementById("loader").style.display = "block";
+        $.ajax({
+            url: '@Url.Action("GetVisitantes", "Home")',
+            data: { "cedula": cedula},
+            crossDomain: true,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                document.getElementById("loader").style.display = "none";
+
+                if (data.mensaje == "NO SE ENCONTRO VISITANTE") {
+                    /*$('#modalVisitante').modal("show");*/
+                    $('#txtNombreNuevo').focus();
+                } else if (data.mensaje == "" || data.mensaje == "SALIDA") {
+
+
+                    //if (data.frecuente != "false") {
+                    //    //se guardo el registro correctamente mostrar ventana de visitante frecuente
+                    //    $('#txtCedulaConsulta').val(cedula);
+                    //    $('#btnEditarFotoV').hide();
+                    //    $('#btnGuardarFotoV').hide();
+                    //    document.getElementById("CorrectoV").style.display = "none";
+                    //    document.getElementById("ErrorV").style.display = "none";
+                    //    document.getElementById("AlertaV").style.display = "none";
+                    //    $('#CorrectoV').html("");
+                    //    $('#ErrorV').html("");
+                    //    $('#AlertaV').html("");
+
+                    //    document.getElementById("divImgV").style.display = "block";
+                    //    document.getElementById("divFotoV").style.display = "none";
+
+
+                    //    document.getElementById("imgEmpleadoV").src = data.imagen;
+
+                    //        document.getElementById("CorrectoV").style.display = "block";
+                    //        $('#CorrectoV').append("<strong>Registro Exitoso</strong><br /> Se registró la ENTRADA del visitante frecuente <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + "</strong><br /> Empresa: <strong>" + data.empresa + "</strong><br /> arl: <strong>" + data.arl + "</strong><br /> Empleado Autoriza: <strong>" + data.empleadoAutoriza + "</strong><br /> Motivo Visita: <strong>" + data.motivoVisita + "</strong><br /> Placa: <strong>" + data.placa +"</strong>" );
+                    //        $('#btnEditarFotoV').show();
+                    //        document.getElementById("loader").style.display = "none";
+                    //        $('#modalregistradoEntradaVFrecuente').modal("show");
+
+                    //} else {
+                       /* $('#modalVisitante').modal("show");*/
+                        $('#txtCedulaVisitante').val(cedula);
+                        $('#txtNombreNuevo').val(data.nombre);
+                        $("#cboArl option[value='" + data.arl + "'").attr("selected", true);
+                        document.getElementById("cboArl").value = data.arl;
+                        document.getElementById("imgVisitante").src = data.imagen;
+                        document.getElementById("imgEmpleadoCV").src = data.imagen;
+
+                    /*}*/
+
+
+
+
+                } else if (data.mensaje == "ENTRADA") {
+
+                    swal({
+                        title: "confirmación",
+                        text: "Visitante tiene un registro de entrada sin salida, ¿continuar?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    },
+                        function () {
+
+                            //if (data.frecuente != "false") {
+                            //    swal.close();
+                            //    document.getElementById("loader").style.display = "block";
+
+                            //     guardarVisitante2(data.cedula, data.nombre, data.empleadoAutoriza, data.motivoVisita, data.placa, data.empresa, data.arl);
+
+
+
+                            //            $('#txtCedulaConsulta').val(cedula);
+                            //            $('#btnEditarFotoV').hide();
+                            //            $('#btnGuardarFotoV').hide();
+                            //            document.getElementById("CorrectoV").style.display = "none";
+                            //            document.getElementById("ErrorV").style.display = "none";
+                            //            document.getElementById("AlertaV").style.display = "none";
+                            //            $('#CorrectoV').html("");
+                            //            $('#ErrorV').html("");
+                            //            $('#AlertaV').html("");
+
+                            //            document.getElementById("divImgV").style.display = "block";
+                            //            document.getElementById("divFotoV").style.display = "none";
+
+
+                            //            document.getElementById("imgEmpleadoV").src = data.imagen;
+
+                            //            document.getElementById("CorrectoV").style.display = "block";
+                            //            $('#CorrectoV').append("<strong>Registro Exitoso</strong><br /> Se registró la ENTRADA del visitante frecuente:<br /> <strong>" + data.nombre + "</strong>,<br /> con número de identificación <strong>" + data.cedula + "</strong><br /> Empresa: <strong>" + data.empresa + "</strong><br /> arl: <strong>" + data.arl + "</strong><br /> Empleado Autoriza: <strong>" + data.empleadoAutoriza + "</strong><br /> Motivo Visita: <strong>" + data.motivoVisita + "</strong><br /> Placa: <strong>" + data.placa + "</strong>");
+                            //            $('#btnEditarFotoV').show();
+                            //            document.getElementById("loader").style.display = "none";
+                            //            $('#modalregistradoEntradaVFrecuente').modal("show");
+
+
+
+
+
+                            //} else {
+                            /*    $('#modalVisitante').modal("show");*/
+                                $('#txtCedulaVisitante').val(cedula);
+                                $('#txtNombreNuevo').val(data.nombre);
+                                $("#cboArl option[value='" + data.arl + "'").attr("selected", true);
+                                document.getElementById("cboArl").value = data.arl;
+                                document.getElementById("imgVisitante").src = data.imagen;
+                                document.getElementById("imgEmpleadoCV").src = data.imagen;
+                                swal.close();
+                            /*}*/
+
+
+
+                        });
+
+
+
+
+
+
+                } else {
+                    swal("ERROR", data.mensaje, "error");
+                }
+
+            },
+
+            error: function (request, message, error) {
+                alert(message);
+            }
+        });
+        } else {
+          /*  $('#modalVisitante').modal("show");*/
+           /* $('#txtCedulaNuevo').focus();*/
+        }
+        $('#txtNombreNuevo').focus();
+
+    }
+
+    function cargarEmpleados() {
+        //cargar empleados
+
+
+        $("#cboEmpleadoAutoriza option").remove();
+        $("#cboEmpleadoAutoriza").append('<option value="">--Selecione uno--</option>');
+        $.ajax({
+            url: '@Url.Action("GetEmpleados", "Home")',
+            data: {},
+            crossDomain: true,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+
+                jQuery.each(data, function (index, itemData) {
+
+                    $("#cboEmpleadoAutoriza").append('<option value="' + itemData.cedula + '">' + itemData.nombre + '</option>');
+
+                });
+
+
+            },
+
+            error: function (request, message, error) {
+                alert(message);
+            }
+        });
+
+
+    }
+
+    function getArl() {
+        $("#cboArl option").remove();
+        $("#cboArl").append('<option value="">--Selecione uno--</option>');
+        $.ajax({
+            url: '@Url.Action("GetArl", "Home")',
+            data: {},
+            crossDomain: true,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+
+
+                jQuery.each(data, function (index, itemData) {
+
+
+                    $("#cboArl").append('<option value="' + itemData.nombre + '">' + itemData.nombre + '</option>');
+
+                });
+
+
+            },
+
+            error: function (request, message, error) {
+                alert(message);
+            }
+        });
+    }
+
+    function guardarVisitante(tipo) {
+
+        var arl = $("#cboArl option:selected").text();
+        var otro = $('#txtarlOtro').val();
+        if (arl == "Otro" && otro == "") {
+            swal("ERROR", "POR FAVOR DIGITE EL VALOR PARA LA ARL", "error");
+        } else {
+            if (arl == "Otro") {
+                arl = otro;
+            }
+
+            var cedula = $("#txtIdEntradaS").val();
+            var nombre = $("#txtNombreNuevo").val();
+            var empleado = $("#cboEmpleadoAutoriza option:selected").val() + '-' + $("#cboEmpleadoAutoriza option:selected").text();
+            var motivo = $("#txtMotivoVisita").val();
+            var placa = $("#txtPlaca").val();
+            var empresa = $("#txtEmpresa").val();
+
+            if (cedula == "" || nombre == "" || $("#cboEmpleadoAutoriza option:selected").val() == "0" || motivo == "0") {
+                swal("ERROR", "POR FAVOR DIGITE LOS DATOS SOLICITADOS (CEDULA, NOMBRE, MOTIVO, EMPLEADO AUTORIZA)", "error");
+            } else {
+
+                   document.getElementById("loader").style.display = "block";
+                   $.ajax({
+                   url: '@Url.Action("GuardarVisitanteEntrada", "Home")',
+                       data: { "cedula": cedula, "nombre": nombre, "arl": arl, "empledo": empleado, "motivo": motivo, "placa": placa, "empresa": empresa, "cedulaEmpleado": $("#cboEmpleadoAutoriza option:selected").val()},
+                   crossDomain: true,
+                   type: 'POST',
+                   dataType: 'json',
+                        success: function (data) {
+                            document.getElementById("loader").style.display = "none";
+                            if (data == "") {
+
+                                $("#success-alert").fadeTo(2000, 500).slideUp(1000, function () {
+                                    $("#success-alert").slideUp(1000);
+                                });
+
+
+                               /* swal("CORRECTO", "SE PROCESO CORRECTAMENTE", "success");*/
+                                //if (tipo == 0) {
+                                //   /* $('#modalVisitante').modal("toggle");*/
+                                //    $("#txtIdEntradaS").val("");
+                                //    $("#txtIdEntradaS").focus();
+                                //} else {
+                                //    $("#txtIdEntradaS").val("");
+                                //    $("#txtNombreNuevo").val("");
+                                //    $("#txtIdEntradaS").focus();
+                                //}
+
+                                cargarEmpleados();
+                                getArl();
+
+                                $("#txtIdEntradaS").val("");
+                                $("#txtNombreNuevo").val("");
+
+                                $("#txtMotivoVisita").val("");
+                                $("#txtPlaca").val("");
+                                $("#txtEmpresa").val("");
+
+                                $("#txtIdEntradaS").focus();
+
+
+
+                            } else {
+                                setTimeout(function () {
+                                    swal("ERROR",data, "error");
+                                }, 1000);
+                            }
+
+
+                     },
+
+                       error: function (request, message, error) {
+                           document.getElementById("loader").style.display = "none";
+                           alert(message);
+                        }
+                   });
+
+            }
+
+        }
+
+    }
+
+    function guardarVisitante2(cedula, nombre, empleado, motivo, placa, empresa, arl) {
+
+
+
+                   $.ajax({
+                   url: '@Url.Action("GuardarVisitanteEntrada", "Home")',
+                   data: { "cedula": cedula, "nombre":nombre, "arl":arl, "empledo":empleado, "motivo":motivo, "placa":placa, "empresa":empresa},
+                   crossDomain: true,
+                   type: 'POST',
+                   dataType: 'json',
+                       success: function (data) {
+                           alert(data);
+                            if (data == "") {
+                                return "";
+                            } else {
+                                return data;
+                            }
+
+
+                     },
+
+                       error: function (request, message, error) {
+                           document.getElementById("loader").style.display = "none";
+                           alert(message);
+                        }
+                   });
+
+
+    }
+
+
+    document.getElementById("loader").style.display = "none";
+
+    function captura() {
+
+        var streaming = false,
+            video = document.querySelector('#video'),
+            canvas = document.querySelector('#canvas'),
+
+    /*        startbutton = document.querySelector('#startbutton'),*/
+            width = 320,
+            height = 0;
+
+        navigator.getUserMedia = (navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        navigator.getUserMedia(
+            {
+                video: true,
+                audio: false
+            },
+            function (stream) {
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.srcObject = stream;
+                }
+                video.play();
+            },
+            function (err) {
+                console.log("An error occured! " + err);
+            }
+        );
+
+        video.addEventListener('canplay', function (ev) {
+            if (!streaming) {
+                height = video.videoHeight / (video.videoWidth / width);
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                streaming = true;
+            }
+        }, false);
+    }
+
+
+    function takepicture() {
+                var width = 250;
+                var height = 250;
+                var video = document.querySelector('#video');
+                var photo = document.querySelector('#imgEmpleadoC');
+                var canvas = document.querySelector('#canvas');
+            canvas.width = 250;
+            canvas.height = 250;
+            canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+
+        document.getElementById("divImg").style.display = "block";
+        document.getElementById("divFoto").style.display = "none";
+        $('#btnGuardarFoto').show();
+      }
+
+
+    function capturaV() {
+
+        var streaming = false,
+            video = document.querySelector('#videoV'),
+            canvas = document.querySelector('#canvasV'),
+
+            /*        startbutton = document.querySelector('#startbutton'),*/
+            width = 320,
+            height = 0;
+
+        navigator.getUserMedia = (navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        navigator.getUserMedia(
+            {
+                video: true,
+                audio: false
+            },
+            function (stream) {
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.srcObject = stream;
+                }
+                video.play();
+            },
+            function (err) {
+                console.log("An error occured! " + err);
+            }
+        );
+
+        video.addEventListener('canplay', function (ev) {
+            if (!streaming) {
+                height = video.videoHeight / (video.videoWidth / width);
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                streaming = true;
+            }
+        }, false);
+    }
+
+
+    function takepictureV() {
+        var width = 250;
+        var height = 250;
+        var video = document.querySelector('#videoV');
+        var photo = document.querySelector('#imgEmpleadoCV');
+        var canvas = document.querySelector('#canvasV');
+        canvas.width = 250;
+        canvas.height = 250;
+        canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+        var data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+
+        document.getElementById("divImgV").style.display = "block";
+        document.getElementById("divFotoV").style.display = "none";
+        $('#btnGuardarFotoV').show();
+    }
+
+    //(function () {
+
+    //    var streaming = false,
+    //        video = document.querySelector('#video'),
+    //        canvas = document.querySelector('#canvas'),
+    //        photo = document.querySelector('#imgEmpleado'),
+    //        startbutton = document.querySelector('#startbutton'),
+    //        width = 320,
+    //        height = 0;
+
+    //    navigator.getMedia = (navigator.getUserMedia ||
+    //        navigator.webkitGetUserMedia ||
+    //        navigator.mozGetUserMedia ||
+    //        navigator.msGetUserMedia);
+
+    //    navigator.getMedia(
+    //        {
+    //            video: true,
+    //            audio: false
+    //        },
+    //        function (stream) {
+    //            if (navigator.mozGetUserMedia) {
+    //                video.mozSrcObject = stream;
+    //            } else {
+    //                var vendorURL = window.URL || window.webkitURL;
+    //                video.srcObject = stream;
+    //            }
+    //            video.play();
+    //        },
+    //        function (err) {
+    //            console.log("An error occured! " + err);
+    //        }
+    //    );
+
+    //    video.addEventListener('canplay', function (ev) {
+    //        if (!streaming) {
+    //            height = video.videoHeight / (video.videoWidth / width);
+    //            video.setAttribute('width', width);
+    //            video.setAttribute('height', height);
+    //            canvas.setAttribute('width', width);
+    //            canvas.setAttribute('height', height);
+    //            streaming = true;
+    //        }
+    //    }, false);
+
+    //    function takepicture() {
+    //        canvas.width = width;
+    //        canvas.height = height;
+    //        canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+    //        var data = canvas.toDataURL('image/png');
+    //        photo.setAttribute('src', data);
+    //    }
+
+    //    startbutton.addEventListener('click', function (ev) {
+    //        takepicture();
+    //        ev.preventDefault();
+    //    }, false);
+
+    //})();
+
+    function getEmpleado(cedula) {
+        $('#txtCedulaConsulta').val("");
+        var nombre = "";
+        if (cedula.length > 12) {
+            var arrayE = cedula.split('/');
+            //contar split
+            //alert(cedula.split('/').length);
+            cedula = Number(arrayE[0]);
+            nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+        }
+
+
+           $('#txtIdEntrada').val("");
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("RecuperarEmpleado", "Home")',
+           data: {"cedula":cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+               success: function (data) {
+                   document.getElementById("loader").style.display = "none";
+
+                   document.getElementById("Correcto").style.display = "none";
+                   document.getElementById("Error").style.display = "none";
+                   document.getElementById("Alerta").style.display = "none";
+                   $('#Correcto').html("");
+                   $('#Error').html("");
+                   $('#Alerta').html("");
+
+                   $('#txtCedulaConsulta').val(cedula);
+                   document.getElementById("imgEmpleado").src = data.imagen;
+                   document.getElementById("imgEmpleadoC").src = data.imagen;
+                   if (data.mensaje == "") {
+                       document.getElementById("Correcto").style.display = "block";
+                       $('#Correcto').append("  <h5 class='alert-heading'>Registro Exitoso de ENTRADA</h5> <hr> Se registró la ENTRADA de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + "<br />");
+                       $("#txtIdEntrada").focus();
+                       /*  $('#btnEditarFoto').show();*/
+                   } else if (data.mensaje == "ENTRADA") {
+                       //document.getElementById("Alerta").style.display = "block";
+                       //$('#Alerta').append("  <h5>El último registro de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + " </strong>, fue también una <strong>ENTRADA</strong>, el día <strong>" + data.fechaUltimo + " </strong></h5>    <H5>¿Desea de todas maneras registrar esta nueva ENTRADA?</H5> <H5>Si lo acepta, el sistema creará automáticamente un registro de SALIDA PREVIA con un minuto de diferencia... </H5>");
+                       //$('#btnGuardarEntradaConfirma').show();
+                       //$('#btnEditarFoto').show();
+                       swal({
+                           title: "ALERTA!",
+                           text: " <h5>El último registro de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + " </strong>, fue también una <strong>ENTRADA</strong>, el día <strong>" + data.fechaUltimo + " </strong></h5>    <H5>¿Desea de todas maneras registrar esta nueva ENTRADA?</H5> <H5>Si lo acepta, el sistema creará automáticamente un registro de SALIDA PREVIA con un minuto de diferencia... </H5>",
+                           type: "warning",
+                           html: true,
+                           showCancelButton: true,
+                           confirmButtonText: "Ok",
+                           closeOnConfirm: false
+                       },
+                           function () {
+                                  guardarEmpleadoEntrada(data.cedula, data.nombre);
+                                  swal.close();
+                               })
+
+
+
+
+
+                   } else if (data.mensaje == "SEDE") {
+                       //document.getElementById("Alerta").style.display = "block";
+                       //$('#Alerta').append("   <h5><strong>" + data.nombre + "</strong>, con número de identificación " + data.cedula +"  </strong>, es empleado de ALIAR S.A. pero de la sede <strong>"+data.sede+"</strong> .</h5>   <H5>¿Desea de todas maneras registrar esta nueva ENTRADA?</H5>");
+                       //$('#btnGuardarEntradaConfirma').show();
+                       //$('#btnEditarFoto').show();
+
+                       swal({
+                           title: "ALERTA!",
+                           text: "<h5><strong>" + data.nombre + "</strong>, con número de identificación " + data.cedula +"  </strong>, es empleado de ALIAR S.A. pero de la sede <strong>"+data.sede+"</strong> .</h5>   <H5>¿Desea de todas maneras registrar esta nueva ENTRADA?</H5>",
+                           type: "warning",
+                           html: true,
+                           showCancelButton: true,
+                           confirmButtonText: "Ok",
+                           closeOnConfirm: false
+                       },
+                           function () {
+                               guardarEmpleadoEntrada(data.cedula, data.nombre);
+                               swal.close();
+                           })
+
+                   } else {
+                       document.getElementById("Error").style.display = "block";
+                       $('#Error').append("<strong>ERROR!</strong> NO SE ENCONTRO EL EMPLEADO O ESTA INACTIVO");
+                   }
+
+
+                   //$('#modalregistradoEntrada').modal("show");
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+        $("#txtIdEntradaS").focus();
+
+    }
+
+    function getEmpleadoSalida(cedula) {
+        $('#txtCedulaConsulta').val("");
+            var nombre = "";
+            if (cedula.length > 12) {
+                var arrayE = cedula.split('/');
+                //contar split
+                //alert(cedula.split('/').length);
+                cedula = Number(arrayE[0]);
+                nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+            }
+           $('#txtIdSalida').val("");
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("RecuperarEmpleadoSalida", "Home")',
+           data: {"cedula":cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+               success: function (data) {
+                   document.getElementById("loader").style.display = "none";
+
+                   document.getElementById("CorrectoS").style.display = "none";
+                   document.getElementById("ErrorS").style.display = "none";
+                   document.getElementById("AlertaS").style.display = "none";
+                   $('#CorrectoS').html("");
+                   $('#ErrorS').html("");
+                   $('#AlertaS').html("");
+                   $('#txtCedulaConsulta').val(cedula);
+                   document.getElementById("imgEmpleadoSalida").src = data.imagen;
+                   document.getElementById("imgEmpleadoC").src = data.imagen;
+                   if (data.mensaje == "") {
+                       document.getElementById("CorrectoS").style.display = "block";
+                       $('#CorrectoS').append("<h5 class='alert-heading'>Registro Exitoso de SALIDA</h5> <hr> Se registró la SALIDA de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + "<br />");
+                       $('#txtIdSalida').focus();
+                   } else if (data.mensaje == "SALIDA") {
+
+                       swal({
+                           title: "ALERTA!",
+                           text: "  <h5>El último registro de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + " </strong>, fue también una <strong>SALIDA</strong>, el día <strong>" + data.fechaUltimo + " </strong></h5>    <H5>¿Desea de todas maneras registrar esta nueva SALIDA?</H5> <H5>Si lo acepta, el sistema creará automáticamente un registro de ENTRADA PREVIA con un minuto de diferencia... </H5>",
+                           type: "warning",
+                           html: true,
+                           showCancelButton: true,
+                           confirmButtonText: "Ok",
+                           closeOnConfirm: false
+                       },
+                           function () {
+                               guardarEmpleadoSalida(data.cedula, data.nombre);
+                               swal.close();
+                           })
+
+                   } else {
+
+                       document.getElementById("ErrorS").style.display = "block";
+                       $('#ErrorS').append("<strong>ERROR!</strong> NO SE ENCONTRO EL EMPLEADO O ESTA INACTIVO");
+                       $('#txtIdSalida').focus();
+                   }
+
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+
+
+    }
+
+    function getVisitanteSalida(cedula) {
+
+            var nombre = "";
+            if (cedula.length > 12) {
+                var arrayE = cedula.split('/');
+                //contar split
+                //alert(cedula.split('/').length);
+                cedula = Number(arrayE[0]);
+                nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+            }
+           $('#txtIdSalidaS').val("");
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GetVisitantes", "Home")',
+           data: {"cedula":cedula},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+               success: function (data) {
+
+                   $('#txtCedulaVisitante').val(cedula);
+                   document.getElementById("imgVisitanteSalida").src = data.imagen;
+                   document.getElementById("imgEmpleadoCV").src = data.imagen;
+
+                   document.getElementById("loader").style.display = "none";
+
+                   document.getElementById("CorrectoSV").style.display = "none";
+                   document.getElementById("ErrorSV").style.display = "none";
+                   document.getElementById("AlertaSV").style.display = "none";
+                   $('#CorrectoSV').html("");
+                   $('#ErrorSV').html("");
+                   $('#AlertaSV').html("");
+                   if (data.mensaje == "ENTRADA") {
+                       guardarVisitanteSalida(cedula, data.nombre);
+                   } else if (data.mensaje == "SALIDA") {
+
+                       document.getElementById("ErrorSV").style.display = "block";
+                       $('#ErrorSV').append("<strong>ERROR!</strong> <h5>El último registro de <strong>" + data.nombre + "</strong>, con número de identificación <strong>" + data.cedula + " </strong>, fue también una <strong>SALIDA</strong>, el día <strong>" + data.fechaUltimo + " </strong></h5>    <H5>cree un registro de ENTRADA PREVIO .. </H5>" );
+                       $('#txtIdSalidaS').focus();
+
+                   } else {
+
+                       document.getElementById("ErrorSV").style.display = "block";
+                       $('#ErrorSV').append("<strong>ERROR!</strong> NO SE ENCONTRO EL VISITANTE ");
+                       $('#txtIdSalidaS').focus();
+                   }
+
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+    }
+
+    $("#txtIdEntrada").focus();
+
+    function cargarModalVisitante() {
+        cargarEmpleados();
+        getArl();
+        var nombre = "";
+
+        //validar si existe empleado
+        document.getElementById("txtarlOtro").style.display = "none";
+        $("#txtCedulaNuevo").val("");
+        $("#txtNombreNuevo").val("");
+        $("#txtEmpleadoAutoriza").val("");
+        $("#txtMotivoVisita").val("");
+        $("#txtPlaca").val("");
+        $("#txtarlOtro").val("");
+        $("#txtEmpresa").val("");
+
+        //$('#txtCedulaNuevo').val(cedula);
+        //$('#txtNombreNuevo').val(nombre);
+        //buscarVisitante();
+        //$('#modalVisitante').modal("show");
+
+    }
+
+    //function cargarModalVisitante(cedula) {
+    //    cargarEmpleados();
+    //    getArl();
+    //    var nombre = "";
+    //    if (cedula.length > 12) {
+    //        var arrayE = cedula.split('/');
+    //        //contar split
+    //        //alert(cedula.split('/').length);
+    //        cedula = Number(arrayE[0]);
+    //        nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+    //    }
+
+
+    //    //validar si existe empleado
+    //    document.getElementById("txtarlOtro").style.display = "none";
+    //    $("#txtCedulaNuevo").val("");
+    //    $("#txtNombreNuevo").val("");
+    //    $("#txtEmpleadoAutoriza").val("");
+    //    $("#txtMotivoVisita").val("");
+    //    $("#txtPlaca").val("");
+    //    $("#txtarlOtro").val("");
+    //    $("#txtEmpresa").val("");
+
+    //    $('#txtCedulaNuevo').val(cedula);
+    //    $('#txtNombreNuevo').val(nombre);
+    //    buscarVisitante();
+    //    //$('#modalVisitante').modal("show");
+
+    //}
+
+
+    $(document).ready(function () {
+
+        $("#success-alert").hide();
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href") // activated tab
+            if (target == "#tabs-2") {
+                document.getElementById("entradaS").style.display = "block";
+                document.getElementById("salidaS").style.display = "none";
+                $("#txtIdEntradaS").focus();
+            } else {
+                document.getElementById("entrada").style.display = "block";
+                document.getElementById("salida").style.display = "none";
+                $("#txtIdEntrada").focus();
+            }
+        });
+
+        cargarModalVisitante();
+
+        $("#cboArl").change(function () {
+            var arl = $("#cboArl option:selected").text();
+            if (arl == "Otro") {
+                document.getElementById("txtarlOtro").style.display = "block";
+            } else {
+                document.getElementById("txtarlOtro").style.display = "none";
+            }
+        });
+
+        $('#txtIdEntradaS').keydown(function (event) {
+            if (event.which == 13) {
+                $('#txtNombreNuevo').val("");
+                var cedula = $('#txtIdEntradaS').val();
+                if (cedula.length > 12) {
+                    var arrayE = cedula.split('/');
+                    //contar split
+                    //alert(cedula.split('/').length);
+                    cedula = Number(arrayE[0]);
+                    nombre = arrayE[3] + ' ' + arrayE[4] + ' ' + arrayE[1] + ' ' + arrayE[2]
+                    $('#txtIdEntradaS').val(cedula);
+                    $('#txtNombreNuevo').val(nombre);
+
+
+                }
+
+                buscarVisitante();
+
+            }
+        });
+
+
+        swal.close();
+        $("#btnEntrada").click(function (i) {
+            document.getElementById("entrada").style.display = "block";
+            document.getElementById("salida").style.display = "none";
+            $("#txtIdEntrada").focus();
+        });
+
+
+        $("#imgVisitante").click(function (i) {
+            if ($('#txtCedulaVisitante').val() != "") {
+                $('#btnEditarFotoV').show();
+                $('#btnGuardarFotoV').hide();
+                document.getElementById("divImgV").style.display = "block";
+                document.getElementById("divFotoV").style.display = "none";
+                $("#modalregistradoEntradaVFrecuente").modal("show");
+            }
+
+        });
+
+        $("#imgVisitanteSalida").click(function (i) {
+            if ($('#txtCedulaVisitante').val() != "") {
+                $('#btnEditarFotoV').show();
+                $('#btnGuardarFotoV').hide();
+                document.getElementById("divImgV").style.display = "block";
+                document.getElementById("divFotoV").style.display = "none";
+                $("#modalregistradoEntradaVFrecuente").modal("show");
+            }
+
+        });
+
+
+
+        $("#imgEmpleado").click(function (i) {
+            if ($('#txtCedulaConsulta').val() != "") {
+                $('#btnEditarFoto').show();
+                $('#btnGuardarFoto').hide();
+                document.getElementById("divImg").style.display = "block";
+                document.getElementById("divFoto").style.display = "none";
+                $("#modalregistradoFoto").modal("show");
+            }
+
+        });
+
+        $("#imgEmpleadoSalida").click(function (i) {
+            if ($('#txtCedulaConsulta').val() != "") {
+                $('#btnEditarFoto').show();
+                $('#btnGuardarFoto').hide();
+                document.getElementById("divImg").style.display = "block";
+                document.getElementById("divFoto").style.display = "none";
+                $("#modalregistradoFoto").modal("show");
+            }
+        });
+
+
+        $("#btnSalida").click(function (i) {
+            document.getElementById("entrada").style.display = "none";
+            document.getElementById("salida").style.display = "block";
+            $("#txtIdSalida").focus();
+        });
+
+
+        $("#btnEntradaS").click(function (i) {
+            document.getElementById("entradaS").style.display = "block";
+            document.getElementById("salidaS").style.display = "none";
+            $("#txtIdEntradaS").focus();
+        });
+        $("#btnSalidaS").click(function (i) {
+            document.getElementById("entradaS").style.display = "none";
+            document.getElementById("salidaS").style.display = "block";
+            $("#txtIdSalidaS").focus();
+        });
+
+        $("#startbutton").click(function (i) {
+
+            takepicture();
+        });
+
+        $("#startbuttonV").click(function (i) {
+
+            takepictureV();
+        });
+
+         $("#btnGuardarFotoV").click(function (i) {
+
+           var imagen = document.getElementById('imgEmpleadoCV').src;
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GuardarImagenVisitante", "Home")',
+           data: { "cedula": $('#txtCedulaVisitante').val(), "imagen": imagen},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+               success: function (data) {
+                   document.getElementById("loader").style.display = "none";
+                   if (data == "") {
+                       $("#modalregistradoEntradaVFrecuente").modal("toggle");
+                       swal("CORRECTO", "SE PROCESO CORRECTAMENTE", "success");
+                      /* document.getElementById("imgVisitante").src = imagen;*/
+
+                       $('#btnGuardarFotoV').hide();
+                   } else {
+                       swal("ERROR", data, "error");
+                   }
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+        });
+
+        $("#btnGuardarFoto").click(function (i) {
+
+           var imagen = document.getElementById('imgEmpleadoC').src;
+           document.getElementById("loader").style.display = "block";
+           $.ajax({
+           url: '@Url.Action("GuardarImagenEmpleado", "Home")',
+           data: { "cedula": $('#txtCedulaConsulta').val(), "imagen": imagen},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+               success: function (data) {
+                   document.getElementById("loader").style.display = "none";
+                   if (data == "") {
+                       $("#modalregistradoFoto").modal("toggle");
+                       swal("CORRECTO", "SE PROCESO CORRECTAMENTE", "success");
+
+                       $('#btnGuardarFoto').hide();
+                   } else {
+                       swal("ERROR", data, "error");
+                   }
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+
+        });
+
+        $("#btnGuardarEntredaS").click(function (i) {
+
+            guardarVisitante(0);
+            /*cargarModalVisitante($("#txtIdEntradaS").val());*/
+        });
+
+        $("#btnGuardarVisitante").click(function (i) {
+
+            guardarVisitante(0);
+        });
+
+
+        $("#btnGuardarVisitante2").click(function (i) {
+
+            guardarVisitante(1);
+        });
+
+        //$('#txtIdEntradaS').keydown(function (event) {
+        //    if (event.which == 13) {
+        //       /* cargarModalVisitante($("#txtIdEntradaS").val());*/
+        //    }
+        //});
+
+
+        $("#btnGuardarEntreda").click(function (i) {
+            document.getElementById("loader").style.display = "block";
+            var cedula = $('#txtIdEntrada').val();
+            if (cedula == "") {
+                setTimeout(function () {
+                    document.getElementById("loader").style.display = "none";
+                    swal("ERROR", "DIGITE LA CEDULA", "error");
+                }, 1000);
+
+            } else {
+                document.getElementById("loader").style.display = "none";
+                /*$('#modalregistradoEntrada').modal("show");*/
+                getEmpleado(cedula);
+            }
+
+        });
+
+        $("#btnEditarFoto").click(function (i) {
+
+            //$('#btnGuardarFoto').show();
+            document.getElementById("divImg").style.display = "none";
+            document.getElementById("divFoto").style.display = "block";
+            captura();
+        });
+
+
+        $("#btnEditarFotoV").click(function (i) {
+
+            //$('#btnGuardarFoto').show();
+            document.getElementById("divImgV").style.display = "none";
+            document.getElementById("divFotoV").style.display = "block";
+            capturaV();
+        });
+
+        @*$("#btnGuardarEntradaConfirma").click(function (i) {
+            document.getElementById("loader").style.display = "block";
+            $.ajax({
+           url: '@Url.Action("GuardarEmpleadoEntrada", "Home")',
+           data: { "cedula": $('#txtCedulaConsulta').val()},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+                success: function (data) {
+                    document.getElementById("loader").style.display = "none";
+                    if (data == "") {
+                        swal("CORRECTO", "SE PROCESO CORRECTAMENTE", "success");
+                        $('#modalregistradoEntrada').modal("toggle");
+                        $("#txtIdEntrada").focus();
+
+                    } else {
+                        setTimeout(function () {
+                            swal("ERROR",data, "error");
+                        }, 1000);
+                    }
+
+
+             },
+
+               error: function (request, message, error) {
+                   document.getElementById("loader").style.display = "none";
+                   alert(message);
+                }
+           });
+
+        });*@
+
+
+
+        $('#txtIdEntrada').keydown(function (event) {
+            if (event.which == 13) {
+                document.getElementById("loader").style.display = "block";
+                var cedula = $('#txtIdEntrada').val();
+                if (cedula == "") {
+                    setTimeout(function () {
+                        document.getElementById("loader").style.display = "none";
+                        swal("ERROR", "DIGITE LA CEDULA", "error");
+                    }, 1000);
+
+
+
+                } else {
+                    document.getElementById("loader").style.display = "none";
+                    /*  $('#modalregistradoEntrada').modal("show");*/
+                    getEmpleado(cedula);
+                }
+            }
+        });
+
+
+        $("#btnGuardarSalida").click(function (i) {
+            document.getElementById("loader").style.display = "block";
+            var cedula = $('#txtIdSalida').val();
+            if (cedula == "") {
+                setTimeout(function () {
+                    document.getElementById("loader").style.display = "none";
+                    swal("ERROR", "DIGITE LA CEDULA", "error");
+                }, 1000);
+
+            } else {
+                document.getElementById("loader").style.display = "none";
+                /*$('#modalregistradoEntrada').modal("show");*/
+                getEmpleadoSalida(cedula);
+            }
+
+        });
+
+
+        $('#txtIdSalida').keydown(function (event) {
+            if (event.which == 13) {
+                document.getElementById("loader").style.display = "block";
+                var cedula = $('#txtIdSalida').val();
+                if (cedula == "") {
+                    setTimeout(function () {
+                        document.getElementById("loader").style.display = "none";
+                        swal("ERROR", "DIGITE LA CEDULA", "error");
+                    }, 1000);
+
+
+
+                } else {
+                    document.getElementById("loader").style.display = "none";
+                    /*  $('#modalregistradoEntrada').modal("show");*/
+                    getEmpleadoSalida(cedula);
+                }
+            }
+        });
+
+
+
+        $("#btnGuardarSalidaS").click(function (i) {
+            document.getElementById("loader").style.display = "block";
+            var cedula = $('#txtIdSalidaS').val();
+            if (cedula == "") {
+                setTimeout(function () {
+                    document.getElementById("loader").style.display = "none";
+                    swal("ERROR", "DIGITE LA CEDULA", "error");
+                }, 1000);
+
+            } else {
+                document.getElementById("loader").style.display = "none";
+                /*$('#modalregistradoEntrada').modal("show");*/
+                getVisitanteSalida(cedula);
+            }
+
+        });
+
+
+        $('#txtIdSalidaS').keydown(function (event) {
+            if (event.which == 13) {
+                document.getElementById("loader").style.display = "block";
+                var cedula = $('#txtIdSalidaS').val();
+                if (cedula == "") {
+                    setTimeout(function () {
+                        document.getElementById("loader").style.display = "none";
+                        swal("ERROR", "DIGITE LA CEDULA", "error");
+                    }, 1000);
+
+
+
+                } else {
+                    document.getElementById("loader").style.display = "none";
+                    /*  $('#modalregistradoEntrada').modal("show");*/
+                    getVisitanteSalida(cedula);
+                }
+            }
+        });
+
+
+    });
+
+</script>

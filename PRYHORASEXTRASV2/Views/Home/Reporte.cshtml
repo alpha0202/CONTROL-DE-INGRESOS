@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewBag.Title = "Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reporte Control de Ingresos Empleados</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label>Fecha Inicio:</label>
+                        <input type="date" class="form-control" name="txtFechaIni" id="txtFechaIni" value="@ViewBag.fechaIni">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha Fin:</label>
+                        <input type="date" class="form-control" name="txtFechaFin" id="txtFechaFin" value="@ViewBag.fechaFin">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+
+                    @*<div class="col-md-4">
+                    <label>Registro:</label>
+                    <select class="form-control" id="cboTipo">
+                        <option value="1" selected>Empleados</option>
+                        <option value="2">Visitantes</option>
+                    </select>
+                </div>*@
+
+                    <div class="col-md-4">
+                        <label>Sede:</label>
+                        <select class="form-control" id="cboSede">
+                            <option value="0" selected>--Seleccione uno--</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Filtro:</label>
+                        <select class="form-control" id="cboFiltro">
+                            <option value="0" selected>Todos</option>
+                            <option value="1">Sin Registro de salida</option>
+                        </select>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-info" id="btnRefrescar">CONSULTAR</button>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <table class="table nowrap table-bordered" id="TResultado">
+                        <thead>
+                            <tr>
+
+                                <th scope="col">CEDULA</th>
+                                <th scope="col">NOMBRE</th>
+                                <th scope="col">FECHA/HORA</th>
+                                <th scope="col">TIPO MARCACIÓN</th>
+                                <th scope="col">TIPO REGISTRO</th>
+                                <th scope="col">SEDE</th>
+                                <th scope="col">PORTERIA</th>
+                                <th scope="col">USUARIO REGISTRA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+    function cargarSedes() {
+        document.getElementById("loader").style.display = "block";
+
+
+           $("#cboSede  option").remove();
+           $("#cboSede").append('<option value="0" selected>--SELECCIONES UNO--</option>')
+         $.ajax({
+           url: '@Url.Action("GetSedes", "Home")',
+           data: {},
+           crossDomain: true,
+           type: 'POST',
+           dataType: 'json',
+                success: function (data) {
+                document.getElementById("loader").style.display = "none";
+
+             jQuery.each(data, function (index, itemData) {
+
+                 $("#cboSede ").append('<option value="' + itemData.valor + '">' + itemData.descripcion +'</option>');
+
+            });
+
+
+             },
+
+               error: function (request, message, error) {
+                   alert(message);
+                     }
+           });
+    }
+
+    $(document).ready(function () {
+        document.getElementById("loader").style.display = "none";
+        cargarSedes();
+
+        $("#btnRefrescar").click(function (i) {
+            var sede = $("#cboSede option:selected").val();
+            var filtro = $("#cboFiltro option:selected").val();
+            if (sede != "0") {
+
+                    document.getElementById("loader").style.display = "block";
+                    table = $('#TResultado').DataTable();
+                    table.destroy();
+                    $('#TResultado tbody').html("");
+                          $.ajax({
+                           url: '@Url.Action("GetReporteEmpleados", "Home")',
+                           data: { "sede": sede, "filtro": filtro, "fechaIni": $('#txtFechaIni').val(), "fechaFin": $('#txtFechaFin').val()},
+                           crossDomain: true,
+                           type: 'POST',
+                             dataType: 'json',
+                             success: function (data) {
+                                  document.getElementById("loader").style.display = "none";
+                                  jQuery.each(data, function (index, itemData) {
+
+                                      var color = "";
+                                      if (itemData.tipoRegistro == "A") {
+                                          color = "#B4FAB9";
+                                      }
+
+                                      var htmlTags = htmlTags + '<tr>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.cedula  + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.nombre+ '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.fecha + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.insert + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.registro + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.sede + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.porteria + '</td>' +
+                                          '<td style = "background-color:' + color + '">' + itemData.usuario + '</td>' +
+                                              '</tr>';
+
+                                      $('#TResultado tbody').append(htmlTags);
+
+
+                                  });
+
+                                  table = $('#TResultado').DataTable();
+                                  table.destroy();
+
+                                  $('#TResultado').DataTable({
+                                      "scrollY": "400px",
+                                      "paging": false,
+                                      "scrollX": true,
+                                      "scrollCollapse": true,
+                                      dom: 'Bfrtip',
+                                      buttons: [
+                                           'excel'
+                                      ],
+                                      "order": [[2, "asc"]]
+                                      //columnDefs: [{
+                                      //    orderable: false,
+                                      //    className: 'select-checkbox',
+                                      //    targets: 0
+                                      //}],
+                                      //select: {
+                                      //    style: 'so',
+                                      //    selector: 'td:first-child'
+                                      //}
+
+                                  });
+
+
+
+                             },
+
+                               error: function (request, message, error) {
+                                   alert(message);
+                                     }
+                             });
+
+
+
+            } else {
+                swal("ERROR", "SELECCIONE UNA SEDE", "error");
+            }
+        });
+
+
+
+    });
+
+</script>

@@ -12,6 +12,18 @@ using System.Net.Mime;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.HSSF.UserModel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using ActionResult = System.Web.Mvc.ActionResult;
+using HttpPostAttribute = System.Web.Mvc.HttpPostAttribute;
+using NonActionAttribute = System.Web.Mvc.NonActionAttribute;
+using ExcelDataReader;
+using System.Data.OleDb;
+
+
 
 namespace PRYHORASEXTRASV2.Controllers
 {
@@ -103,6 +115,123 @@ namespace PRYHORASEXTRASV2.Controllers
 
 
         }
+
+
+        public ActionResult ReporteVisitanteFrecuente()
+        {
+            try
+            {
+                if (Request.Cookies["CIuser"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+
+                Usuario user = new Usuario();
+                user = Usuario.RecuperarUsuario(Request.Cookies["CIuser"].Value);
+
+                if (user == null)
+                {
+                    throw new ArgumentException("NO SE ENCONTRO REGISTRADO EL USUARIO");
+                }
+
+                if (user.estado != 'A')
+                {
+                    throw new ArgumentException("EL USUARIO " + user.nombre + " ESTA DESACTIVADO");
+                }
+
+                ViewBag.NombreUsuario = user.nombre;
+                ViewBag.titulo = user.porteria + "-" + user.sede;
+
+                ViewBag.fechaIni = DateTime.Now.ToString("yyyy-MM-dd");
+                ViewBag.fechaFin = DateTime.Now.ToString("yyyy-MM-dd");
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", new { Error = ex.Message });
+
+
+            }
+
+            return View();
+
+
+        }
+
+       
+        #region excel
+        public ActionResult ImportExcel()
+        {
+
+
+            return View();
+        }
+        [System.Web.Mvc.ActionName("Importexcel")]
+        [HttpPost]
+        public ActionResult Importexcel1()
+        {
+           
+            if (Request.Files["FileUpload1"].ContentLength > 0)
+            {
+                string extension = System.IO.Path.GetExtension(Request.Files["FileUpload1"].FileName).ToLower();
+                
+                string connString = "";
+                
+
+                string[] validFileTypes = { ".xls", ".xlsx", ".csv" };
+
+                string path1 = string.Format("{0}/{1}", Server.MapPath("~/Recursos/Uploads"), Request.Files["FileUpload1"].FileName);
+                if (!Directory.Exists(path1))
+                {
+                    Directory.CreateDirectory(Server.MapPath("~/Recursos/Uploads"));
+                }
+                if (validFileTypes.Contains(extension))
+                {
+                    if (System.IO.File.Exists(path1))
+                    {
+                        System.IO.File.Delete(path1);
+                    }
+                    Request.Files["FileUpload1"].SaveAs(path1);
+                    if (extension == ".csv")
+                    {
+                        DataTable dt = Utility.ConvertCSVtoDataTable(path1);
+                        ViewBag.Data = dt;
+                    }
+                    //Connection String to Excel Workbook  
+                    else if (extension.Trim() == ".xls")
+                    {
+                        connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path1 + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                        DataTable dt = Utility.ConvertXSLXtoDataTable(path1, connString);
+                        ViewBag.Data = dt;
+                    }
+                    else if (extension.Trim() == ".xlsx")
+                    {
+                        connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path1 + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                        DataTable dt = Utility.ConvertXSLXtoDataTable(path1, connString);
+                        ViewBag.Data = dt;
+                        
+                    }
+
+                }
+                else
+                {
+                    ViewBag.Error = "Por favor cargar archivos con extensión .xls, .xlsx or .csv.";
+
+                }
+
+            }
+
+            return View();
+
+        }
+
+        #endregion
+
+
+
+
+
 
 
         public class Combox
@@ -830,7 +959,6 @@ namespace PRYHORASEXTRASV2.Controllers
                 List<Parametros> LstParametros = new List<Parametros>();
                 LstParametros.Add(new Parametros("@Cedula", cedula, System.Data.SqlDbType.Decimal));
                 LstParametros.Add(new Parametros("@Usuario", usuario, System.Data.SqlDbType.VarChar));
-
                 LstParametros.Add(new Parametros("@nombre", nombre, System.Data.SqlDbType.VarChar));
                 LstParametros.Add(new Parametros("@arl", arl, System.Data.SqlDbType.VarChar));
                 LstParametros.Add(new Parametros("@empleado", empledo, System.Data.SqlDbType.VarChar));

@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Visitante Frecuente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Visitantes Frecuentes</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Listado de visitantes</h6>
+                <form>
+
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-9">
+
+
+
+                            </div>
+                            <div class="col-md-3">
+
+
+                                <a href="~/Recursos/Plantilla_VisitanteFrecuente.xlsx" download="Plantilla_visitantes_frecuentes.xlsx">Descargar Plantilla</a>
+
+
+
+                            </div>
+
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-sm-9">
+                                <input class="form-control-file" type="file" id="inputExcel" />
+                            </div>
+
+                            <div class="col-sm-3">
+                                <button class="btn btn-warning" onclick="mostrarDatos()" id="btnMostrarData" >Mostrar datos</button>
+                                <button class="btn btn-success" onclick="enviarDatos()">Enviar datos</button>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <table class="table nowrap table-bordered" id="TResultado">
+                                <thead>
+                                    <tr>
+
+                                        <th scope="col">CEDULA</th>
+                                        <th scope="col">NOMBRE</th>
+                                        <th scope="col">ARL</th>
+                                        <th scope="col">EMPLEADO AUTORIZA</th>
+                                        <th scope="col">MOTIVO</th>
+                                        <th scope="col">EMPRESA</th>
+                                        <th scope="col">PLACA</th>
+                                        <th scope="col">FECHA_INICIO</th>
+                                        <th scope="col">FECHA_FIN</th>
+                                        <th scope="col">USUARIO REGISTRA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        function mostrarDatos() {
+            const input = document.getElementById("inputExcel")
+            const formData = new FormData()
+
+            formData.append("ArchivoExcel", input.files[0])
+
+            fetch("Home/LeerExcel", {
+                method: "POST",
+                body: formData
+            })
+                .then((response) => { return response.json() })
+                .then((dataJson) => {
+                    console.log(dataJson)
+                });
+        }
+
+
+    </script>
+    
+
+ }
+
+
+@*<script src="~/Scripts/jquery-3.6.0.min.js"></script>*@
+<!--<script type="text/javascript">
+
+    function mostrarDatos()
+    {
+        const input = document.getElementById("inputExcel")
+        const formData = new FormData()
+
+        formData.append("ArchivoExcel", input.files[0])
+
+        fetch("Home/LeerExcel", {
+            method: "POST",
+            body: formData
+        })
+            .then((response) => { return response.json() })
+            .then((dataJson) => {
+                console.log(dataJson)
+            });
+    }
+
+    function enviarDatos() {
+
+    }-->
+
+    @*function mostrarDatos() {
+        document.getElementById("loader").style.display = "block";
+
+        const input = document.getElementById("inputExcel")
+        const formData = new FormData()
+        formData.append("ArchivoExcel", input.files[0])
+         
+         $.ajax({
+             url: '@Url.Action("LeerExcel", "Home")',
+             data: { "ArchivoExcel": formData },
+             crossDomain: true,
+             type: 'POST',
+             dataType: 'json',
+                success: function (data) {
+
+                    console.log(data)
+             },
+
+               error: function (request, message, error) {
+                   alert(message);
+               }
+           });
+    }
+
+
+
+    $(document).ready(function () {
+
+        $("#btnMostrarData").click(function (i) {
+            mostrarDatos();
+
+        });
+
+
+
+    });*@
+
+
+
+
+
+<!--</script>-->
+
+
+
+
+
+

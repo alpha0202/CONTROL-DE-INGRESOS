@@ -1,0 +1,271 @@
+﻿@using System.Data;
+
+@{
+    ViewBag.Title = "Visitantes Frecuentes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<style type="text/css">
+    /* Generic Styling, for Desktops/Laptops */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    /* Zebra striping */
+    tr:nth-of-type(odd) {
+        background: #eee;
+    }
+
+    th {
+        background: #333;
+        color: white;
+        font-weight: bold;
+    }
+
+    td, th {
+        padding: 6px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    /*
+    Max width before this PARTICULAR table gets nasty
+    This query will take effect for any screen smaller than 760px
+    and also iPads specifically.
+    */
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            border: 1px solid #ccc;
+        }
+
+        td {
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+        }
+
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+            }
+            /*
+     Label the data
+     */
+            td:before {
+                content: attr(data-title);
+            }
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+
+
+<!--<![endif]-->
+@using (Html.BeginForm("ImportExcel", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+{
+    <!--<table>
+        <tr>
+            <td>Archivo Excel</td>
+            <td><input type="file" class="btn btn-primary" id="FileUpload1" name="FileUpload1" /></td>
+        </tr>
+        <tr>
+            <td></td>-->
+            @*<td><input type="submit" id="Submit" name="Submit" value="Submit" /></td>*@
+        <!--</tr>
+        <tr>
+            <td></td>
+            <td><input class="btn btn-secondary" type="submit" id="Upload" name="Upload" value="Carguar" /></td>
+        </tr>
+    </table>-->
+    <div class="container-fluid">
+
+        <div class="row">
+        <div class="card">
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Cargar Masiva</h5>
+                        <p class="card-text">Puede realizar carga masiva de visitantes frecuentes, registrados dentro de un archivo excel.</p>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" name="FileUpload1"  id="FileUpload1"  aria-label="Upload">
+                            <button class="btn btn-outline-primary" type="submit" id="Upload" name="Upload" value="Carguar">Cargar</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2"></div>
+
+                <div class="col-sm-5">
+
+                    
+                        <div class="card-body">
+                            <h5 class="card-title">Descargar Plantilla</h5>
+                            <p class="card-text">Descargue la plantilla de ejemplo para registrar adecuadamente los visitantes con el orden y datos necesarios para el cargue masivo.</p>
+                            <div class="input-group mb-3">
+                                <a class="btn btn-outline-success" href="~/Recursos/Plantilla_VisitanteFrecuente.xlsx" download="Plantilla_visitantes_frecuentes.xlsx">Descargar Plantilla</a>
+
+                            </div>
+
+                        </div>
+
+                    
+                </div>
+
+
+            </div>
+          
+
+
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+
+
+    @*<div class="success message">
+            <h3>Congrats, you did it!</h3>
+            <p>This is just a success notification message.</p>
+        </div>*@
+
+}
+
+<div class="row">
+    <table id="">
+
+        @if (ViewBag.Data != null)
+        {
+            <thead>
+
+                @foreach (DataColumn column in (ViewBag.Data as System.Data.DataTable).Columns)
+                {
+                <th>@column.ColumnName.ToUpper()</th>
+
+
+            }
+                </thead>
+                if ((ViewBag.Data as System.Data.DataTable).Rows.Count > 0)
+                {
+                    foreach (DataRow dr in (ViewBag.Data as System.Data.DataTable).Rows)
+                    {
+
+                        <tr>
+
+                            @foreach (DataColumn column in (ViewBag.Data as System.Data.DataTable).Columns)
+                            {
+                                <td data-title='@column.ColumnName'>
+
+                                    @dr[column].ToString()&nbsp;
+                                </td>
+                            }
+
+                        </tr>
+
+                    }
+
+                }
+                else
+                {
+                    int count = (ViewBag.Data as System.Data.DataTable).Columns.Count;
+                    <tr>
+
+                        <td colspan='@count' style="color:red;">
+
+                            No Data Found.
+                        </td>
+                    </tr>
+
+                }
+
+            }
+            else
+            {
+                if (ViewBag.Error != null)
+                {
+                    <tr>
+                        <td style="color:red;">
+
+                            @(ViewBag.Error != null ? ViewBag.Error.ToString() : "")
+                        </td>
+
+                    </tr>
+                }
+            }
+    </table>
+</div>
+
+<script type="text/javascript">
+    var myMessages = ['info', 'warning', 'error', 'success'];
+    function hideAllMessages() {
+        var messagesHeights = new Array(); // this array will store height for each
+
+        for (i = 0; i < myMessages.length; i++) {
+            messagesHeights[i] = $('.' + myMessages[i]).outerHeight(); // fill array
+            $('.' + myMessages[i]).css('top', -messagesHeights[i]); //move element outside viewport
+        }
+    }
+    function showMessage(type) {
+        $('.' + type + '-trigger').click(function () {
+            hideAllMessages();
+            $('.' + type).animate({ top: "0" }, 50000);
+        });
+    }
+    $(document).ready(function () {
+        hideAllMessages();
+        $("#Upload").click(function () {
+
+            var formData = new FormData();
+            var totalFiles = document.getElementById("FileUpload1").files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById("FileUpload1").files[i];
+
+                formData.append("FileUpload1", file);
+            }
+            $.ajax({
+                type: "POST",
+                url: '/Home/ImportExcel',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showMessage(myMessages[3]);
+
+                },
+                error: function (xhr, textStatus, error) {
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+

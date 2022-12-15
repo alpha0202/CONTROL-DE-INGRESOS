@@ -159,8 +159,47 @@ namespace PRYHORASEXTRASV2.Controllers
 
         }
 
-       
-        #region excel
+
+        //Obtener reporte (tabla) con los visitantes frecuentes.
+        [HttpPost]
+        public ActionResult GetReporteVisitantesFrecuentes()
+        {
+            Usuario user = new Usuario();
+            user = Usuario.RecuperarUsuario(Request.Cookies["CIuser"].Value);
+
+            List<VisitanteFrecuente> respuesta = new List<VisitanteFrecuente>();
+
+            DataTable dt = new DataTable();
+            //List<Parametros> LstParametros = new List<Parametros>();
+            //LstParametros.Add(new Parametros("@fechaIni", fechaIni, System.Data.SqlDbType.Date));
+            //LstParametros.Add(new Parametros("@fechaFin", fechaFin, System.Data.SqlDbType.Date));
+            //LstParametros.Add(new Parametros("@filtro", filtro, System.Data.SqlDbType.Int));
+            //LstParametros.Add(new Parametros("@sede", sede, System.Data.SqlDbType.Int));
+            dt = Datos.SPObtenerDataTable("SP_ReporteVisitantesFrecuentes");
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                VisitanteFrecuente res = new VisitanteFrecuente();
+                res.cedula = int.Parse(dr["cedulaEmpleado"].ToString());
+                res.nombre = dr["nombreEmpleado"].ToString();
+                res.arl = dr["arl"].ToString();
+                res.empleadoAutoriza = dr["empleadoAutoriza"].ToString();
+                res.motivoVisita = dr["motivoVisita"].ToString();
+                res.placa = dr["placa"].ToString();
+                res.empresa = dr["empresa"].ToString();
+                res.fechaIniFrecuente= DateTime.Parse(dr["fechaIniFrecuente"].ToString()).ToString("dd/MM/yyyy");
+                res.fechaFinFrecuente= DateTime.Parse(dr["fechaFinFrecuente"].ToString()).ToString("dd/MM/yyyy");
+                      
+                respuesta.Add(res);
+
+            }
+
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        #region CARGUE DE ARCHIVO EXCEL 
         public ActionResult ImportExcel()
         {
 
